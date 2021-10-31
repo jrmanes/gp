@@ -30,8 +30,8 @@ func main() {
 
 	values := appValues{}
 
-	values.AppName = stringPrompt("Enter this application's name (no spaces)", "")
-	values.YourName = stringPrompt("Enter your name", "")
+	values.AppName = stringPrompt("Enter this application's name (no spaces), (Example: go-server)", "")
+	values.YourName = stringPrompt("Enter your Github or Organization name (Example: github.com/YOUR_ORGANIZATION_NAME - ONLY THE NAME)", "")
 
 	rootFsMapping := map[string]string{
 		"env.tmpl":          ".env",
@@ -81,6 +81,7 @@ func main() {
 	}
 
 	fmt.Printf("\n🎉 Congratulations! Your application is ready to Go!.")
+	fmt.Printf("   go run .\n")
 }
 
 func stringPrompt(label, defaultValue string) string {
