@@ -1,0 +1,86 @@
+package bootstrap
+
+import (
+	"log"
+	"os"
+	"os/signal"
+	"net/http"
+	"time"
+
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+)
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file... ERROR: ", err)
+	}
+}
+
+// Server define an http standard library
+type Server struct {
+	server *http.Server
+}
+
+func Run() error {
+	port := os.Getenv("SERVER_PORT")
+	serv, err := server.New(port)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	// start the server.
+	go serv.Start()
+	// Wait for an in interrupt panic
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	<-c
+
+	// Attempt a graceful shutdown.
+	serv.Close()
+	data.Close()
+	return err
+}
+
+// New initialize a new server with configuration.
+func New(port string) (*Server, error) {
+	r := chi.NewRouter()
+
+	// use chi middleware in order to log request request to our API
+	r.Use(middleware.Logger)
+
+	r.Mount("/", v1.New())
+
+	// validate the port received, if not, use default 8080
+	if len(port) == 0 {
+		port = "3000"
+	}
+
+	// set configuration to our server
+	serv := &http.Server{
+		Addr:         ":" + port,
+		Handler:      r,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	server := Server{server: serv}
+
+	return &server, nil
+}
+
+// Start the server.
+func (serv *Server) Start() {
+	log.Printf("Server running on http://localhost%s", serv.server.Addr)
+	log.Fatal(serv.server.ListenAndServe())
+}
+
+// Close server resources.
+func (serv *Server) Close() error {
+	return nil
+}

@@ -1,0 +1,15 @@
+package main
+
+import (
+	"log"
+
+	b "github.com/{{ .YourName }}/{{ .AppName }}/cmd/bootstrap"
+)
+
+// main entrypoint for our application
+func main() {
+	// Load Bootstrap
+	if err := b.Run(cidr); err != nil {
+		log.Fatal(err)
+	}
+}
