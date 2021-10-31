@@ -80,10 +80,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("\n🎉 Congratulations! Your new application is ready.")
-	fmt.Printf("\nTo begin execute the following:\n\n")
-	fmt.Printf("   cd %s\n", values.AppName)
-	fmt.Printf("   go run .\n")
+	fmt.Printf("\n🎉 Congratulations! Your application is ready to Go!.")
 }
 
 func stringPrompt(label, defaultValue string) string {
